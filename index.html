@@ -8,7 +8,18 @@
     <title>Connect 4</title>
 </head>
 <body>
-    <div id="grid"></div>
+    <div id="game-menu">
+        <h1 id="title">Connect 4</h1>
+        <button class="start-btn">START</button>
+    </div>
+    <div id="game-area">
+        <h2>Turn: <span id="currentPlayer">Player 1</span></h3>
+        <div id="grid"></div>
+    </div>
+    <div id="endgame-area">
+        <h1><span id="result">Player 1 won!</span></h2>
+        <button class="start-btn">REPLAY</button>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

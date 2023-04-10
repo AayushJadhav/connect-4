@@ -1,7 +1,66 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+}
+
+#game-menu,
+#game-area,
+#endgame-area {
+    width: 100vw;
+    height: 100vh;
+    background-color: #eeeeee;
+}
+
+#game-menu {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+#title {
+    align-self: center;
+    font-size: 12vw;
+    font-style: italic;
+    width: fit-content;
+    height: fit-content;
+    margin-bottom: 80px;
+    cursor: default;
+}
+
+.start-btn {
+    align-self: center;
+    width: max-content;
+    height: max-content;
+    font-size: 4vw;
+    cursor: pointer;
+    padding: 5px;
+    background-color: #eeeeee;
+}
+/* 
+#game-menu {
+    display: none;
+} */
+
+#game-area {
+    display: none;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+
+#game-area h2 {
+    font-size: 4vh;
+    margin-bottom: 30px;
+}
+
 #grid {
-    width: 140px;
-    height: 120px;
-    border: 1px solid black;
+    align-self: center;
+    width: 300px;
+    height: 300px;
+    border: 1px solid rgb(0, 0, 0);
     display: flex;
     flex-wrap: wrap;
 }
@@ -9,4 +68,26 @@
 #grid div {
     width: 20px;
     height: 20px;
+}
+
+.player-one {
+    background-color: blue;
+    border-radius: 10px;
+}
+
+.player-two {
+    background-color: red;
+    border-radius: 10px;
+}
+
+#endgame-area {
+    display: none;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#endgame-area h1 {
+    align-self: center;
+    font-size: 8vw;
+    margin-bottom: 80px;
 }
