@@ -13,6 +13,7 @@
 }
 
 #game-menu {
+    display: none;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -46,14 +47,10 @@
     background-color: #111111;
     color: #eeeeee;
 }
-/* 
-#game-menu {
-    display: none;
-} */
 
 #game-area {
     background-color: #333333;
-    display: none;
+    display: flex;
     flex-direction: column;
     text-align: center;
     justify-content: center;
@@ -69,40 +66,44 @@
     /* border: 1px solid black; */
     display: flex;
     flex-direction: row;
-    width: 400px;
-    height: 20px;
+    width: 434px;
+    height: 62px;
     align-self: center;
 }
 
 #upper-band div {
-    width: 20px;
-    height: 20px;
-    /* border: 1px solid; */
+    width: 60px;
+    height: 60px;
+    border: 1px solid #333333;
+    border-radius: 50%;
 }
 
 #grid {
+    background-color: #222222;
     align-self: center;
-    width: 400px;
-    height: 400px;
+    width: 434px;
+    height: 372px;
     border: 1px solid rgb(0, 0, 0);
     display: flex;
     flex-wrap: wrap;
 }
 
 #grid div {
-    width: 20px;
-    height: 20px;
+    width: 60px;
+    height: 60px;
+    border: 1px solid black;
+    border-radius: 50%;
     /* background-color: blue; */
 }
 
 .player-one {
-    background-color: #eeeeee;
-    border-radius: 10px;
+    background-color: #ffffff;
+    border-radius: 50%;
 }
 
 .player-two {
-    background-color: #111111;
-    border-radius: 10px;
+    background-color: #000000;
+    border-radius: 50%;
 }
 
 #instructions {

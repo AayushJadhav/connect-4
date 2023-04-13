@@ -1,114 +1,94 @@
-const gameMenu = document.querySelector("#game-menu")
+// const gameMenu = document.querySelector("#game-menu")
 const gameArea = document.querySelector("#game-area")
-const endgameArea = document.querySelector("#endgame-area")
+// const endgameArea = document.querySelector("#endgame-area")
 const gridDiv = document.querySelector("#grid")
 const upperBandDiv = document.querySelector("#upper-band")
-const startBtn = document.querySelector(".start-btn")
+// const startBtn = document.querySelector(".start-btn")
 const turnH3 = document.querySelector("#current-player")
-const resultH3 = document.querySelectorAll("#result")
+// const resultH3 = document.querySelectorAll("#result")
 const gameAreaH2s = document.querySelectorAll("#game-area h2")
 
-const upperBandArray = []
 const gridArray = []
+const columnArray = []
 
 var currentPlayer = "one"
-turnH3.innerHTML = currentPlayer == "one" ? 1 : 2
+turnH3.innerHTML = currentPlayer === "one" ? 1 : 2
 
-var currentIndex = 19
+// startBtn.addEventListener('click', startGame)
 
-startBtn.addEventListener('click', startGame)
+startGame()
 
 function startGame() {
-    gameMenu.style.display = "none"
-    gameArea.style.display = "flex"
-    createGrid()
-    addEventListener('keyup', eventHandler)
-    // console.log(upperBandArray)
-    // console.log(gridArray)
+	createGrid()
+	// gridDiv.addEventListener('click', clickHandler)
 }
 
 function createGrid() {
-    for (let i = 0; i <= 19; i++) {
-        var upperSquare = document.createElement('div')
-        upperBandArray.push(upperSquare)
-        upperSquare.classList.add("upper-squares")
-        upperSquare.id = i
-        if (i == 19) {
-            upperSquare.classList.add("player" + '-' + currentPlayer)
-        }
-        upperBandDiv.appendChild(upperSquare)
-    }
+	for (let y = 0; y < 6; y++) {
+		let row = []
+		for (let x = 0; x < 7; x++) {
+			let square = document.createElement('div')
+			square.id = x.toString() + '-' + y.toString()
+			row.push(square)
+			square.addEventListener('click', clickHandler)
+			gridDiv.appendChild(square)
+		}
+		gridArray.push(row)
+	}
+	console.log(gridArray)
 
-    for (let y = 0; y <= 19; y++) {
-        for (let x = 0; x <= 19; x++) {
-            var square = document.createElement('div')
-            gridArray.push([square, x, y])
-            gridDiv.appendChild(square)
-        }
-    }
-
-    for (let i = 0; i < gridArray.length; i++) {
-        gridArray[i].push(i)
-        gridArray[i][0].id = i
-    }
+	for (let i = 0; i < gridArray[0].length; i++) {
+		columnArray.push(gridArray.length - 1)
+	}
+	console.log(columnArray)
 }
 
 function changeBackground() {
-    if (currentPlayer == "two") {
-        gameArea.style.backgroundColor = "#cccccc"
-        gameAreaH2s.forEach(h2 => h2.style.color = "#333333")
-    } else if (currentPlayer == "one") {
-        gameArea.style.backgroundColor = "#333333"
-        gameAreaH2s.forEach(h2 => h2.style.color = "#cccccc")
-    }
+	if (currentPlayer === "one") {
+		gameArea.style.backgroundColor = "#333333"
+		gameAreaH2s.forEach(h2 => {
+			h2.style.color = "#aaaaaa"
+		})
+	} else if (currentPlayer === "two") {
+		gameArea.style.backgroundColor = "#aaaaaa"
+		gameAreaH2s.forEach(h2 => {
+			h2.style.color = "#333333"
+		})
+	}
 }
 
-function eventHandler({ key }) {
-    // console.log(e)
+function clickHandler({ target }) {
+	console.log(target)
+	let coords = target.id.split('-')
 
-    switch (key) {
-        case "ArrowLeft":
-            upperBandArray[currentIndex].classList.remove("player" + "-" + currentPlayer)
-            if (currentIndex != 0) {
-                currentIndex -= 1
-            }
-            upperBandArray[currentIndex].classList.add("player" + "-" + currentPlayer)
+	console.log(gridArray)
 
-            break
-        case "ArrowRight":
-            upperBandArray[currentIndex].classList.remove("player" + "-" + currentPlayer)
-            if (currentIndex != 19) {
-                currentIndex += 1
-            }
-            upperBandArray[currentIndex].classList.add("player" + "-" + currentPlayer)
-            break
-        case " ":
-            upperBandArray[currentIndex].classList.remove("player" + "-" + currentPlayer)
-            handleSpaceBarPress(currentIndex)
-            upperBandArray[currentIndex].classList.remove("player" + "-" + currentPlayer)
-            currentIndex = 19
-            currentPlayer = currentPlayer == "one" ? "two" : "one"
-            turnH3.innerHTML = currentPlayer
-            changeBackground()
-            upperBandArray[19].classList.add("player" + "-" + currentPlayer)
-            break
-    }
+	let currentX = parseInt(coords[0])
+	let currentY = parseInt(coords[1])
+
+	console.log('currentY', currentY)
+	currentY = columnArray[currentX]
+
+	console.log('currentX', currentX)
+
+	if (!(currentY < 0)) {
+		gridArray[currentY][currentX].classList.add("player-" + currentPlayer)
+
+		currentY -= 1
+		columnArray[currentX] = currentY
+
+		currentPlayer = currentPlayer === "one" ? "two" : "one"
+		turnH3.innerHTML = currentPlayer === "one" ? 1 : 2
+		changeBackground()
+	} else {
+		this.removeEventListener('click', clickHandler)
+	}
 }
 
-function handleSpaceBarPress(currentIndex) {
-    // console.log(emptyDivsArray())
-}
-
-function emptyDivsArray() {
-    var emptyDivsArray = []
-
-    gridArray.forEach(arr => {
-        if (!arr[0].classList.contains("player-one") & !arr[0].classList.contains("player-two")) {
-            emptyDivsArray.push(arr[0])
-        }
-    })
-
-    return emptyDivsArray
-}
-
-addEventListener('keyup', eventHandler)
+/** For placing disc.
+ * Suggestion save x and y co-ordinate of each 'square' 
+ * first, create an array with value of [5, 5, 5, 5, 5, 5] i.e. no. of available rows in each column,
+ * then access the value of specific element(row number) at specific index(column number)
+ * then as you add disc in the grid, subtract that accessed value.
+ * refer https://www.youtube.com/watch?v=4ARsthVnCTg
+ */
