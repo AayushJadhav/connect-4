@@ -1,0 +1,109 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+}
+
+#game-menu,
+#game-area,
+#endgame-area {
+    width: 100vw;
+    height: 100vh;
+    background-color: #cccccc;
+}
+
+#game-menu {
+    display: none;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+#title {
+    align-self: center;
+    font-size: 12vw;
+    width: fit-content;
+    height: fit-content;
+    margin-bottom: 80px;
+    cursor: default;
+}
+
+.start-btn {
+    align-self: center;
+    width: max-content;
+    height: max-content;
+    font-size: 4vw;
+    cursor: pointer;
+    padding: 10px;
+    background-color: #eeeeee;
+    border: 1px solid #111111;
+}
+
+.start-btn:hover {
+    border-color: #eeeeee;
+    background-color: #111111;
+    color: #eeeeee;
+}
+
+#game-area {
+    background-color: #333333;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+
+#current-player-h2 {
+    color: #cccccc;
+    font-size: 6vh;
+    margin-bottom: 30px;
+}
+
+#grid {
+    background-color: #222222;
+    border: 2px solid #111111;
+    align-self: center;
+    width: 476px;
+    height: 408px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px;
+    padding-bottom: 30px;
+}
+
+#grid div {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #111111;
+    margin: 2px;
+    border-radius: 50%;
+}
+
+.player-one {
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+}
+
+.player-two {
+    border: 2px solid #000000;
+    border-radius: 50%;
+}
+
+#instructions {
+    color: #cccccc;
+    font-size: 3vh;
+}
+
+#endgame-area {
+    display: none;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#endgame-area h1 {
+    align-self: center;
+    font-size: 8vw;
+    margin-bottom: 80px;
+}
