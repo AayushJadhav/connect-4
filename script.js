@@ -1,26 +1,35 @@
-// const gameMenu = document.querySelector("#game-menu")
+const gameMenu = document.querySelector("#game-menu")
 const gameArea = document.querySelector("#game-area")
-// const endgameArea = document.querySelector("#endgame-area")
+const endgameArea = document.querySelector("#endgame-area")
 const gridDiv = document.querySelector("#grid")
 const upperBandDiv = document.querySelector("#upper-band")
-// const startBtn = document.querySelector(".start-btn")
+const startBtn = document.querySelectorAll(".start-btn")
 const turnH3 = document.querySelector("#current-player")
-// const resultH3 = document.querySelectorAll("#result")
+const resultH3 = document.querySelector("#result")
 const gameAreaH2s = document.querySelectorAll("#game-area h2")
 
-const gridArray = []
-const columnArray = []
+var gridArray = []
+var columnArray = []
 
 var currentPlayer = "one"
 turnH3.innerHTML = currentPlayer === "one" ? 1 : 2
 
-// startBtn.addEventListener('click', startGame)
+document.body.onload = function () {
+	gameMenu.style.display = "flex"
+	gameArea.style.display = "none"
+	endgameArea.style.display = "none"
 
-startGame()
+	startBtn[0].addEventListener('click', startGame)
+}
 
 function startGame() {
+	gameMenu.style.display = "none"
+	gameArea.style.display = "flex"
+	endgameArea.style.display = "none"
+	
 	createGrid()
-	// gridDiv.addEventListener('click', clickHandler)
+
+	document.querySelectorAll(".disc").forEach(disc => disc.style.backgroundColor = currentPlayer === "one" ? "#333333" : "#aaaaaa")
 }
 
 function createGrid() {
@@ -29,66 +38,128 @@ function createGrid() {
 		for (let x = 0; x < 7; x++) {
 			let square = document.createElement('div')
 			square.id = x.toString() + '-' + y.toString()
+			square.classList.add("disc")
 			row.push(square)
 			square.addEventListener('click', clickHandler)
 			gridDiv.appendChild(square)
 		}
 		gridArray.push(row)
 	}
-	console.log(gridArray)
 
 	for (let i = 0; i < gridArray[0].length; i++) {
 		columnArray.push(gridArray.length - 1)
 	}
-	console.log(columnArray)
 }
 
 function changeBackground() {
+	document.querySelectorAll(".player-one").forEach(disc => disc.style.backgroundColor = "#ffffff")
+	document.querySelectorAll(".player-two").forEach(disc => disc.style.backgroundColor = "#000000")
 	if (currentPlayer === "one") {
 		gameArea.style.backgroundColor = "#333333"
 		gameAreaH2s.forEach(h2 => {
 			h2.style.color = "#aaaaaa"
 		})
+		document.querySelectorAll(".disc").forEach(disc => disc.style.backgroundColor = "#333333")
 	} else if (currentPlayer === "two") {
 		gameArea.style.backgroundColor = "#aaaaaa"
 		gameAreaH2s.forEach(h2 => {
 			h2.style.color = "#333333"
 		})
+		document.querySelectorAll(".disc").forEach(disc => disc.style.backgroundColor = "#aaaaaa")
 	}
 }
 
 function clickHandler({ target }) {
-	console.log(target)
 	let coords = target.id.split('-')
-
-	console.log(gridArray)
 
 	let currentX = parseInt(coords[0])
 	let currentY = parseInt(coords[1])
 
-	console.log('currentY', currentY)
 	currentY = columnArray[currentX]
 
-	console.log('currentX', currentX)
-
 	if (!(currentY < 0)) {
+		gridArray[currentY][currentX].classList.remove("disc")
 		gridArray[currentY][currentX].classList.add("player-" + currentPlayer)
 
 		currentY -= 1
 		columnArray[currentX] = currentY
+
+		checkWinner()
 
 		currentPlayer = currentPlayer === "one" ? "two" : "one"
 		turnH3.innerHTML = currentPlayer === "one" ? 1 : 2
 		changeBackground()
 	} else {
 		this.removeEventListener('click', clickHandler)
+		alert("There is no place!")
 	}
 }
 
-/** For placing disc.
- * Suggestion save x and y co-ordinate of each 'square' 
- * first, create an array with value of [5, 5, 5, 5, 5, 5] i.e. no. of available rows in each column,
- * then access the value of specific element(row number) at specific index(column number)
- * then as you add disc in the grid, subtract that accessed value.
- * refer https://www.youtube.com/watch?v=4ARsthVnCTg
- */
+function checkWinner() {
+	// horizontal check
+	for (let y = 0; y < gridArray.length; y++) {
+		for (let x = 0; x < (gridArray[y].length - 3); x++) {
+			if (gridArray[y][x] != " ") {
+				if (gridArray[y][x].className == "player-one" &&
+					gridArray[y][x + 1].className == "player-one" &&
+					gridArray[y][x + 2].className == "player-one" &&
+					gridArray[y][x + 3].className == "player-one" ||
+					gridArray[y][x].className == "player-two" &&
+					gridArray[y][x + 1].className == "player-two" &&
+					gridArray[y][x + 2].className == "player-two" &&
+					gridArray[y][x + 3].className == "player-two")
+				{
+					gameOver(y, x)
+				}
+			}
+		}
+	}
+	// vertical check
+	for (let y = 0; y < (gridArray.length - 3); y++) {
+		for (let x = 0; x < gridArray[y].length; x++) {
+			if (gridArray[y][x] != " ") {
+				if (gridArray[y][x].className == "player-one" &&
+					gridArray[y + 1][x].className == "player-one" &&
+					gridArray[y + 2][x].className == "player-one" &&
+					gridArray[y + 3][x].className == "player-one" ||
+					gridArray[y][x].className == "player-two" &&
+					gridArray[y + 1][x].className == "player-two" &&
+					gridArray[y + 2][x].className == "player-two" &&
+					gridArray[y + 3][x].className == "player-two")
+				{
+					gameOver(y, x)
+				}
+			}
+		}
+	}
+
+	// diagonal check
+	for (let y = 0; y < (gridArray.length - 3); y++) {
+		for (let x = 0; x < (gridArray[y].length - 3); x++) {
+			if (gridArray[y][x] != " ") {
+				gridArray[y][x].classList.add('test')
+			}
+		}
+	}
+}
+
+function gameOver(y, x) {
+	gameMenu.style.display = "none"
+	gameArea.style.display = "none"
+	endgameArea.style.display = "flex"
+
+	let winnerPlayer = gridArray[y][x].className == "player-one" ? 1 : 2
+	resultH3.innerHTML = "Player " + winnerPlayer + " won!"
+
+	gridArray.forEach(arr => {
+		arr.forEach(div => div.remove())
+	})
+
+	currentPlayer = winnerPlayer == 1 ? "one" : "two"
+	turnH3.innerHTML = currentPlayer === "one" ? 1 : 2
+
+	gridArray = []
+	columnArray = []
+
+	startBtn[1].addEventListener('click', startGame)
+}
