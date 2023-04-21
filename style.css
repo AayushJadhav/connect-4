@@ -24,7 +24,6 @@
 #title {
     align-self: center;
     font-size: 12vw;
-    font-style: italic;
     width: fit-content;
     height: fit-content;
     margin-bottom: 80px;
@@ -37,7 +36,7 @@
     height: max-content;
     font-size: 4vw;
     cursor: pointer;
-    padding: 5px;
+    padding: 10px;
     background-color: #eeeeee;
     border: 1px solid #111111;
 }
@@ -64,10 +63,10 @@
 
 #grid {
     background-color: #222222;
+    border: 2px solid #111111;
     align-self: center;
     width: 476px;
     height: 408px;
-    /* border: 1px solid rgb(0, 0, 0); */
     display: flex;
     flex-wrap: wrap;
     padding: 5px;
@@ -81,23 +80,13 @@
     margin: 2px;
     border-radius: 50%;
 }
-/* 
-.disc {
-    background-color: #333333;
-} */
-
-.test {
-    background-color: yellow;
-}
 
 .player-one {
-    /* background-color: #ffffff; */
     border: 2px solid #ffffff;
     border-radius: 50%;
 }
 
 .player-two {
-    /* background-color: #000000; */
     border: 2px solid #000000;
     border-radius: 50%;
 }

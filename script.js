@@ -1,12 +1,8 @@
 const gameMenu = document.querySelector("#game-menu")
 const gameArea = document.querySelector("#game-area")
 const endgameArea = document.querySelector("#endgame-area")
-const gridDiv = document.querySelector("#grid")
-const upperBandDiv = document.querySelector("#upper-band")
 const startBtn = document.querySelectorAll(".start-btn")
 const turnH3 = document.querySelector("#current-player")
-const resultH3 = document.querySelector("#result")
-const gameAreaH2s = document.querySelectorAll("#game-area h2")
 
 var gridArray = []
 var columnArray = []
@@ -26,10 +22,11 @@ function startGame() {
 	gameMenu.style.display = "none"
 	gameArea.style.display = "flex"
 	endgameArea.style.display = "none"
-	
+
 	createGrid()
 
-	document.querySelectorAll(".disc").forEach(disc => disc.style.backgroundColor = currentPlayer === "one" ? "#333333" : "#aaaaaa")
+	document.querySelectorAll(".disc").forEach(disc => 
+		disc.style.backgroundColor = currentPlayer === "one" ? "#333333" : "#aaaaaa")
 }
 
 function createGrid() {
@@ -41,7 +38,7 @@ function createGrid() {
 			square.classList.add("disc")
 			row.push(square)
 			square.addEventListener('click', clickHandler)
-			gridDiv.appendChild(square)
+			document.querySelector("#grid").appendChild(square)
 		}
 		gridArray.push(row)
 	}
@@ -52,8 +49,11 @@ function createGrid() {
 }
 
 function changeBackground() {
+	var gameAreaH2s = document.querySelectorAll("#game-area h2")
+
 	document.querySelectorAll(".player-one").forEach(disc => disc.style.backgroundColor = "#ffffff")
 	document.querySelectorAll(".player-two").forEach(disc => disc.style.backgroundColor = "#000000")
+	
 	if (currentPlayer === "one") {
 		gameArea.style.backgroundColor = "#333333"
 		gameAreaH2s.forEach(h2 => {
@@ -100,16 +100,12 @@ function checkWinner() {
 	for (let y = 0; y < gridArray.length; y++) {
 		for (let x = 0; x < (gridArray[y].length - 3); x++) {
 			if (gridArray[y][x] != " ") {
-				if (gridArray[y][x].className == "player-one" &&
-					gridArray[y][x + 1].className == "player-one" &&
-					gridArray[y][x + 2].className == "player-one" &&
-					gridArray[y][x + 3].className == "player-one" ||
-					gridArray[y][x].className == "player-two" &&
-					gridArray[y][x + 1].className == "player-two" &&
-					gridArray[y][x + 2].className == "player-two" &&
-					gridArray[y][x + 3].className == "player-two")
-				{
-					gameOver(y, x)
+				if (!(gridArray[y][x].classList.contains("disc"))) {
+					if (gridArray[y][x].classList.contains(gridArray[y][x + 1].className) &&
+						gridArray[y][x + 1].classList.contains(gridArray[y][x + 2].className) &&
+						gridArray[y][x + 2].classList.contains(gridArray[y][x + 3].className)) {
+						gameOver(y, x)
+					}
 				}
 			}
 		}
@@ -118,16 +114,12 @@ function checkWinner() {
 	for (let y = 0; y < (gridArray.length - 3); y++) {
 		for (let x = 0; x < gridArray[y].length; x++) {
 			if (gridArray[y][x] != " ") {
-				if (gridArray[y][x].className == "player-one" &&
-					gridArray[y + 1][x].className == "player-one" &&
-					gridArray[y + 2][x].className == "player-one" &&
-					gridArray[y + 3][x].className == "player-one" ||
-					gridArray[y][x].className == "player-two" &&
-					gridArray[y + 1][x].className == "player-two" &&
-					gridArray[y + 2][x].className == "player-two" &&
-					gridArray[y + 3][x].className == "player-two")
-				{
-					gameOver(y, x)
+				if (!(gridArray[y][x].classList.contains("disc"))) {
+					if (gridArray[y][x].classList.contains(gridArray[y + 1][x].className) &&
+						gridArray[y + 1][x].classList.contains(gridArray[y + 2][x].className) &&
+						gridArray[y + 2][x].classList.contains(gridArray[y + 3][x].className)) {
+						gameOver(y, x)
+					}
 				}
 			}
 		}
@@ -137,7 +129,28 @@ function checkWinner() {
 	for (let y = 0; y < (gridArray.length - 3); y++) {
 		for (let x = 0; x < (gridArray[y].length - 3); x++) {
 			if (gridArray[y][x] != " ") {
-				gridArray[y][x].classList.add('test')
+				if (!(gridArray[y][x].classList.contains("disc"))) {
+					if (gridArray[y][x].classList.contains(gridArray[y + 1][x + 1].className) &&
+						gridArray[y + 1][x + 1].classList.contains(gridArray[y + 2][x + 2].className) &&
+						gridArray[y + 2][x + 2].classList.contains(gridArray[y + 3][x + 3].className)) {
+						gameOver(y, x)
+					}
+				}
+			}
+		}
+	}
+
+	// anti-diagonal check
+	for (let y = 3; y < gridArray.length; y++) {
+		for (let x = 0; x < (gridArray[y].length - 3); x++) {
+			if (gridArray[y][x] != " ") {
+				if (!(gridArray[y][x].classList.contains("disc"))) {
+					if (gridArray[y][x].classList.contains(gridArray[y - 1][x + 1].className) &&
+						gridArray[y - 1][x + 1].classList.contains(gridArray[y - 2][x + 2].className) &&
+						gridArray[y - 2][x + 2].classList.contains(gridArray[y - 3][x + 3].className)) {
+						gameOver(y, x)
+					}
+				}
 			}
 		}
 	}
@@ -149,7 +162,7 @@ function gameOver(y, x) {
 	endgameArea.style.display = "flex"
 
 	let winnerPlayer = gridArray[y][x].className == "player-one" ? 1 : 2
-	resultH3.innerHTML = "Player " + winnerPlayer + " won!"
+	document.querySelector("#result").innerHTML = "PLAYER " + winnerPlayer + " WON!"
 
 	gridArray.forEach(arr => {
 		arr.forEach(div => div.remove())
